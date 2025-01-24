@@ -4,7 +4,8 @@ from app.routes.ics_201 import (
     actions_strategies_tactics,
     chart,
     resource_summary,
-    ics_201
+    ics_201,
+    approval
 )
 
 router = APIRouter()
@@ -17,3 +18,5 @@ router.include_router(resource_summary.router,
                         prefix="/resource-summary")
 router.include_router(actions_strategies_tactics.router,
                         prefix="/actions-strategies-tactics")
+router.include_router(approval.router,
+                        prefix="/approval")
