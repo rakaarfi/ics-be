@@ -13,7 +13,6 @@ class Ics201(SQLModel, table=True):
     time_initiated: time = Field(sa_column=Field(sa_type=Time))
     map_sketch: Optional[str] = Field(default=None)
     situation_summary:str
-    is_signature: bool
     objectives: str
     
     actions_strategies_tactics: List["ActionsStrategiesTactics"] = Relationship(back_populates="ics_201")
@@ -47,6 +46,16 @@ class ResourceSummary(SQLModel, table=True):
     ics_201_id: Optional[int] = Field(default=None, foreign_key="ics_201.id")
     
     ics_201: Optional["Ics201"] = Relationship(back_populates="resource_summary")
+    
+    
+class Ics201Approval(SQLModel, table=True):
+    __tablename__ = "ics_201_approval"
+    
+    id: int = Field(default=None, primary_key=True)
+    ics_201_id: Optional[int] = Field(default=None, foreign_key="ics_201.id")
+    date_approved: date
+    time_approved: time = Field(sa_column=Field(sa_type=Time))
+    is_approved: bool
     
 
 class IcsChart(SQLModel, table=True):
