@@ -235,10 +235,11 @@ def convert_string_to_date_time(item: SQLModel | dict) -> SQLModel:
 
     date_fields = [
         'join_date', 'exit_date', 'date_from', 'date_to',
-        'date_incident', 'date_initiated', 'date_ordered'
+        'date_incident', 'date_initiated', 'date_ordered', 'date_approved'
     ]
     time_fields = [
-        'time_incident', 'time_from', 'time_to', 'time_initiated', 'time_ordered'
+        'time_incident', 'time_from', 'time_to', 'time_initiated', 'time_ordered',
+        'time_approved'
     ]
 
     for field in date_fields:
