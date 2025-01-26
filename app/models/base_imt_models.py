@@ -1,6 +1,7 @@
-from sqlmodel import Field, SQLModel, Date
-from typing import Optional
 from datetime import date
+from typing import Optional
+
+from sqlmodel import Field, SQLModel
 
 
 class BaseImtMember(SQLModel, table=False):

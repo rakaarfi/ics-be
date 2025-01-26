@@ -1,15 +1,12 @@
+from typing import Any, List, Tuple, Type
+
 from fastapi.exceptions import HTTPException
-from sqlmodel import select, func, SQLModel
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Tuple, List, Any, Type
+from sqlmodel import SQLModel, func, select
 
 
 async def paginate_query(
-    statement,
-    session: AsyncSession,
-    page: int,
-    limit: int,
-    scalar: bool = True
+    statement, session: AsyncSession, page: int, limit: int, scalar: bool = True
 ) -> Tuple[list, int, int]:
     """
     Paginates a SQLAlchemy query and returns a tuple of (paginated data, total data, total pages).
@@ -25,7 +22,9 @@ async def paginate_query(
         Tuple[list, int, int]: A tuple of (paginated data, total data, total pages).
     """
     if page < 1:
-        raise HTTPException(status_code=400, detail="Page number must be greater than 0")
+        raise HTTPException(
+            status_code=400, detail="Page number must be greater than 0"
+        )
     if limit < 1:
         raise HTTPException(status_code=400, detail="Limit must be greater than 0")
 
@@ -49,17 +48,16 @@ async def paginate_query(
     Membuat query untuk menghitung jumlah total baris dari hasil subquery
     """
     result_count = await session.execute(query_count)
-    total_data = result_count.scalars().one()  # Mengambil hasil tunggal (jumlah total baris)
+    total_data = (
+        result_count.scalars().one()
+    )  # Mengambil hasil tunggal (jumlah total baris)
 
     total_pages = (total_data + limit - 1) // limit
     return raw_data, total_pages, total_data
 
 
 def build_pagination_response(
-    data: List[Any],
-    page: int,
-    total_pages: int,
-    total_data: int
+    data: List[Any], page: int, total_pages: int, total_data: int
 ) -> dict:
     """
     Build a standardized response for paginated data.
@@ -74,17 +72,20 @@ def build_pagination_response(
         "data": data,
         "current_page": page,
         "total_pages": total_pages,
-        "total_data": total_data
+        "total_data": total_data,
     }
-    
-    
-def imt_members_search_condition(search: str, model: Type[SQLModel],):
+
+
+def imt_members_search_condition(
+    search: str,
+    model: Type[SQLModel],
+):
     search_lower = f"%{search.lower()}%"
     condition = (
-        func.lower(model.name).like(search_lower) |
-        func.lower(model.nf_name).like(search_lower) |
-        func.lower(model.role).like(search_lower) |
-        func.lower(model.office_phone).like(search_lower) |
-        func.lower(model.mobile_phone).like(search_lower)
+        func.lower(model.name).like(search_lower)
+        | func.lower(model.nf_name).like(search_lower)
+        | func.lower(model.role).like(search_lower)
+        | func.lower(model.office_phone).like(search_lower)
+        | func.lower(model.mobile_phone).like(search_lower)
     )
     return condition
