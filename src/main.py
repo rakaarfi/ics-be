@@ -5,20 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 
 from src.infrastructure.config.database import drop_table, init_db
-from src.infrastructure.api.incident_data import router as incident_data_router
-from src.infrastructure.api.ics_201.ics_201_router import router as ics_201_router
-from src.infrastructure.api.imt_members.finance_section.finance_router import \
-    router as finance_section_router
-from src.infrastructure.api.imt_members.logistic_section.logistic_router import \
-    router as logistic_section_router
-from src.infrastructure.api.imt_members.main_section.main_router import \
-    router as main_section_router
-from src.infrastructure.api.imt_members.planning_section.planning_router import \
-    router as planning_section_router
-from src.infrastructure.api.operational_period import router as operational_period_router
-from src.infrastructure.api.roster import router as roster_router
-from src.infrastructure.api.roster_table import router as roster_table_router
-from src.infrastructure.api.upload import router as upload_router
+from src.infrastructure.api.routers import configure_routers
 from src.infrastructure.api.exception_handlers import (
     custom_http_exception_handler,
     validation_exception_handler,
@@ -73,35 +60,7 @@ async def on_startup():
 
 
 # Add router to FastAPI
-app.include_router(
-    main_section_router, prefix="/main-section", tags=["IMT Members: Main Section"]
-)
-app.include_router(
-    planning_section_router,
-    prefix="/planning-section",
-    tags=["IMT Members: Planning Section"],
-)
-app.include_router(
-    logistic_section_router,
-    prefix="/logistic-section",
-    tags=["IMT Members: Logistic Section"],
-)
-app.include_router(
-    finance_section_router,
-    prefix="/finance-section",
-    tags=["IMT Members: Finance Section"],
-)
-app.include_router(roster_router, prefix="/roster", tags=["IMT Roster"])
-app.include_router(roster_table_router, prefix="/roster-table", tags=["IMT Table"])
-app.include_router(
-    incident_data_router, prefix="/incident-data", tags=["Incident Data"]
-)
-app.include_router(
-    operational_period_router, prefix="/operational-period", tags=["Operational Period"]
-)
-app.include_router(upload_router, prefix="/upload", tags=["Upload"])
-app.include_router(ics_201_router, prefix="/ics-201", tags=["ICS 201"])
-
+configure_routers(app)
 
 # Add exception handlers
 app.add_exception_handler(CustomHTTPException, custom_http_exception_handler)
