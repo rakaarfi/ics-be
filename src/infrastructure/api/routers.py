@@ -2,6 +2,12 @@ from fastapi import FastAPI
 
 from src.infrastructure.api.incident_data import router as incident_data_router
 from src.infrastructure.api.ics_201.ics_201_router import router as ics_201_router
+from src.infrastructure.api.ics_202.ics_202_router import router as ics_202_router
+from src.infrastructure.api.ics_203.ics_203_router import router as ics_203_router
+from src.infrastructure.api.ics_204.ics_204_router import router as ics_204_router
+from src.infrastructure.api.ics_205.ics_205_router import router as ics_205_router
+from src.infrastructure.api.ics_206.ics_206_router import router as ics_206_router
+from src.infrastructure.api.ics_208.ics_208_router import router as ics_208_router
 from src.infrastructure.api.imt_members.finance_section.finance_router import \
     router as finance_section_router
 from src.infrastructure.api.imt_members.logistic_section.logistic_router import \
@@ -26,6 +32,12 @@ routers = [
     (operational_period_router, "/operational-period", ["Operational Period"]),
     (upload_router, "/upload", ["Upload"]),
     (ics_201_router, "/ics-201", ["ICS 201"]),
+    (ics_202_router, "/ics-202", ["ICS 202"]),
+    (ics_203_router, "/ics-203", ["ICS 203"]),
+    (ics_204_router, "/ics-204", ["ICS 204"]),
+    (ics_205_router, "/ics-205", ["ICS 205"]),
+    (ics_206_router, "/ics-206", ["ICS 206"]),
+    (ics_208_router, "/ics-208", ["ICS 208"]),
 ]
 
 def configure_routers(app: FastAPI):
