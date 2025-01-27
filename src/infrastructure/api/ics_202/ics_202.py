@@ -66,8 +66,8 @@ async def delete_ics_202(id: int, repo: BaseRepository = Depends(get_repository)
     response_model=PaginationResponse[List[Ics202]],
 )
 async def read_ics_202_with_pagination(
-    page: int, 
-    limit: int,
+    page: int = 1, 
+    limit: int = 10,
     search: str = "", 
     repo: BaseRepository = Depends(get_repository)
 ):
