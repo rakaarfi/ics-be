@@ -1,0 +1,145 @@
+from typing import List, Optional
+
+from pydantic import BaseModel
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import SQLModel, func
+
+from src.infrastructure.config.database import get_session
+from src.infrastructure.database.repositories.base_repository import BaseRepository
+from src.core.entities.ics_204_models import EquipmentAssigned
+from src.core.entities.pagination_models import PaginationResponse
+from src.core.exceptions import NotFoundException, BadRequestException
+
+
+# Define a new model to allow the creation of multiple entries in a single API request
+class EquipmentAssignedBase(SQLModel):
+    ics_204_id: Optional[int] = None
+    kind: str
+    quantity: int
+    type_specification: str
+    number: str
+    location: str
+    remarks: str
+    
+
+class EquipmentAssignedCreate(SQLModel):
+    datas: List[EquipmentAssignedBase]
+    
+
+class EquipmentAssignedDelete(BaseModel):
+    ids: list[int]
+    
+    
+router = APIRouter()
+
+    
+# Dependency to get the repository
+def get_repository(session: AsyncSession = Depends(get_session)) -> BaseRepository:
+    return BaseRepository(session)
+
+
+# Endpoint untuk create
+@router.post(
+    "/create/",
+    summary="Create Equipment Assigned",
+    description="Create a new Equipment Assigned",
+)
+async def create_equipment_assigned(
+    item: EquipmentAssignedCreate, repo: BaseRepository = Depends(get_repository)
+):
+    return await repo.create_items(EquipmentAssigned, item.datas)
+
+
+# Endpoint untuk read
+@router.get("/read/")
+async def read_equipment_assigned(repo: BaseRepository = Depends(get_repository)):
+    return await repo.read_items(EquipmentAssigned)
+
+
+# Endpoint untuk read by id
+@router.get("/read/{id}")
+async def read_equipment_assigned_by_id(
+    id: int, repo: BaseRepository = Depends(get_repository)
+):
+    try:
+        return await repo.read_item_by_id(EquipmentAssigned, id)
+    except NotFoundException as e:
+        raise e
+    
+
+# Endpoint untuk update
+@router.put("/update/{id}")
+async def update_equipment_assigned(
+    updated_data: EquipmentAssigned,
+    id: int,
+    repo: BaseRepository = Depends(get_repository),
+):
+    try:
+        return await repo.update_item(EquipmentAssigned, id, updated_data)
+    except NotFoundException as e:
+        raise e
+    
+
+# Endpoint untuk delete
+@router.delete("/delete/{id}")
+async def delete_equipment_assigned(
+    id: int, repo: BaseRepository = Depends(get_repository)
+):
+    try:
+        return await repo.delete_item(EquipmentAssigned, id)
+    except NotFoundException as e:
+        raise e
+    
+
+# Endpoint untuk delete multiple
+@router.delete("/delete-many/")
+async def delete_multiple_equimpent_assigned(
+    ids: EquipmentAssignedDelete, repo: BaseRepository = Depends(get_repository),
+):
+    return await repo.delete_items_by_ids(EquipmentAssigned, ids.ids)
+
+
+# Endpoint untuk read paginated
+@router.get(
+    "/read-paginated/", response_model=PaginationResponse[EquipmentAssigned]
+)
+async def read_equipment_assigned_paginated(
+    page: int = 1,
+    limit: int = 10,
+    search: str = "",
+    repo: BaseRepository = Depends(get_repository),
+):
+    condition = None
+
+    if search:
+        search_lower = f"%{search.lower()}%"
+        condition = func.lower(EquipmentAssigned.kind).like(
+            search_lower
+        ) | func.lower(EquipmentAssigned.type_specification).like(
+            search_lower
+        ) | func.lower(EquipmentAssigned.number).like(
+            search_lower
+        ) | func.lower(EquipmentAssigned.location).like(
+            search_lower
+        ) | func.lower(EquipmentAssigned.remarks).like(
+            search_lower
+        ) | func.lower(EquipmentAssigned.quantity).like(
+            search_lower
+        )
+        
+
+    return await repo.read_paginated_items(
+        EquipmentAssigned, page, limit, condition
+    )
+
+
+# Endpoint untuk read by ics_204_id
+@router.get(
+    "/read-by-ics-id/{ics_204_id}", response_model=List[EquipmentAssigned]
+)
+async def read_equipment_assigned_by_ics_id(
+    ics_204_id: int, repo: BaseRepository = Depends(get_repository),
+):
+    condition = EquipmentAssigned.ics_204_id == ics_204_id
+    return await repo.read_items_by_condition(EquipmentAssigned, condition)
