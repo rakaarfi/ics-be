@@ -1,5 +1,7 @@
 import os
+import logging
 
+from decouple import config
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
@@ -9,11 +11,12 @@ from sqlmodel import SQLModel
 # from src.core.entities.incident_data import IncidentData, OperationalPeriod
 # from src.core.entities.roster import ImtRoster
 
-# PostgreSQL connection string URL (use an async driver like asyncpg)
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+asyncpg://rakaarfi:qwertyuiop@172.28.49.140:5432/ics_database",
-)
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Load database URL from .env
+DATABASE_URL = config("DATABASE_URL")
 
 # Create an asynchronous SQLAlchemy engine for PostgreSQL
 engine = create_async_engine(DATABASE_URL, echo=False)
@@ -26,23 +29,35 @@ async_session_factory = sessionmaker(
 
 # Asynchronous function to get database session
 async def get_session():
-    async with async_session_factory() as session:
-        yield session
+    try:
+        async with async_session_factory() as session:
+            yield session
+    except Exception as e:
+        logger.error(f"Error getting session: {e}")
+        raise
 
 
 # Function to drop tables
 async def drop_table():
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
-        # await conn.run_sync(ResourceSummary.__table__.drop)
-        # await conn.run_sync(ActionsStrategiesTactics.__table__.drop)
-        # await conn.run_sync(IcsChart.__table__.drop)
-        # await conn.run_sync(Ics201.__table__.drop)
-    print("Tables have been dropped.")
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(SQLModel.metadata.drop_all)
+            # await conn.run_sync(ResourceSummary.__table__.drop)
+            # await conn.run_sync(ActionsStrategiesTactics.__table__.drop)
+            # await conn.run_sync(IcsChart.__table__.drop)
+            # await conn.run_sync(Ics201.__table__.drop)
+        logger.info("Tables have been dropped successfully.")
+    except Exception as e:
+        logger.error(f"Error dropping tables: {e}")
+        raise
 
 
 # Function to create all tables based on the model
 async def init_db():
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-    print("Tables have been created.")
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(SQLModel.metadata.create_all)
+        logger.info("Tables have been created successfully.")
+    except Exception as e:
+        logger.error(f"Error creating tables: {e}")
+        raise
