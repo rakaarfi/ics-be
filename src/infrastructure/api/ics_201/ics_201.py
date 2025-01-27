@@ -11,6 +11,7 @@ from src.core.entities.incident_data_models import IncidentData
 from src.core.entities.pagination_models import PaginationResponse
 from src.core.exceptions import NotFoundException, BadRequestException
 
+
 router = APIRouter()
 
 # Dependency to get the repository
