@@ -2,6 +2,10 @@ from fastapi import HTTPException
 from fastapi import status
 
 class CustomHTTPException(HTTPException):
+    """
+    Custom HTTPException class that extends FastAPI's HTTPException.
+    Adds an error_code field for more detailed error handling.
+    """
     def __init__(
         self,
         status_code: int,
@@ -15,6 +19,7 @@ class CustomHTTPException(HTTPException):
 
 # Contoh error yang sering digunakan
 class NotFoundException(CustomHTTPException):
+    """Exception raised when a resource is not found."""
     def __init__(self, detail: str = "Resource not found", error_code: str = "NOT_FOUND"):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -24,6 +29,7 @@ class NotFoundException(CustomHTTPException):
 
 
 class BadRequestException(CustomHTTPException):
+    """Exception raised for bad request errors."""
     def __init__(self, detail: str = "Bad request", error_code: str = "BAD_REQUEST"):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -33,6 +39,7 @@ class BadRequestException(CustomHTTPException):
 
 
 class UnauthorizedException(CustomHTTPException):
+    """Exception raised when a user is not authorized."""
     def __init__(self, detail: str = "Unauthorized", error_code: str = "UNAUTHORIZED"):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -42,6 +49,7 @@ class UnauthorizedException(CustomHTTPException):
 
 
 class ForbiddenException(CustomHTTPException):
+    """Exception raised when access is forbidden."""
     def __init__(self, detail: str = "Forbidden", error_code: str = "FORBIDDEN"):
         super().__init__(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -51,7 +59,9 @@ class ForbiddenException(CustomHTTPException):
 
 
 class InternalServerErrorException(CustomHTTPException):
+    """Exception raised for internal server errors."""
     def __init__(self, detail: str = "Internal server error", error_code: str = "INTERNAL_ERROR"):
+
         super().__init__(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=detail,
