@@ -1,10 +1,13 @@
+import logging
 from datetime import datetime
 from typing import Any, List, Tuple, Type
 
 from fastapi import HTTPException
 from sqlmodel import SQLModel, func, select
-from fastapi.exceptions import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def convert_string_to_date_time(item: SQLModel | dict) -> SQLModel:
     """
@@ -46,6 +49,7 @@ def convert_string_to_date_time(item: SQLModel | dict) -> SQLModel:
                     datetime.strptime(getattr(item, field), "%Y-%m-%d").date(),
                 )
             except ValueError as e:
+                logging.error(f"Error parsing date for field '{field}': {getattr(item, field)}. Error: {e}")
                 raise HTTPException(
                     status_code=400,
                     detail=f"Invalid format for field '{field}'. Expected format: YYYY-MM-DD. Error: {str(e)}",
@@ -58,6 +62,7 @@ def convert_string_to_date_time(item: SQLModel | dict) -> SQLModel:
                     item, field, datetime.strptime(getattr(item, field), "%H:%M").time()
                 )
             except ValueError as e:
+                logging.error(f"Error parsing time for field '{field}': {getattr(item, field)}. Error: {e}")
                 raise HTTPException(
                     status_code=400,
                     detail=f"Invalid format for field '{field}'. Expected format: HH:MM. Error: {str(e)}",
