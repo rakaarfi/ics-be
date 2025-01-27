@@ -2,6 +2,7 @@ from datetime import date, time
 from typing import List, Optional
 
 from sqlalchemy import Time
+from pydantic import field_validator
 from sqlmodel import Column, Field, Relationship, SQLModel
 
 from src.core.entities.ics_201_models import Ics201
@@ -54,3 +55,17 @@ class OperationalPeriod(SQLModel, table=True):
     ics_205: List["Ics205"] = Relationship(back_populates="operational_period")
     ics_206: List["Ics206"] = Relationship(back_populates="operational_period")
     ics_208: List["Ics208"] = Relationship(back_populates="operational_period")
+
+    @field_validator("time_to")
+    @classmethod
+    def check_time_to(cls, value: date, values) -> date:
+        if value and "time_from" in values.data and value < values.data["time_from"]:
+            raise ValueError("Time to cannot be earlier than time from")
+        return value
+    
+    @field_validator("date_to")
+    @classmethod
+    def check_date_to(cls, value: date, values) -> date:
+        if value and "date_from" in values.data and value > values.data["date_from"]:
+            raise ValueError("Date to cannot be earlier than date from")
+        return value
