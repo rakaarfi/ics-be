@@ -14,10 +14,17 @@ class Ics206(SQLModel, table=True):
     is_utilized: Optional[bool]
 
     medical_aid_stations: List["MedicalAidStation"] = Relationship(
-        back_populates="ics_206"
+        back_populates="ics_206",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
-    transportation: List["Transportation"] = Relationship(back_populates="ics_206")
-    hospitals: List["Hospitals"] = Relationship(back_populates="ics_206")
+    transportation: List["Transportation"] = Relationship(
+        back_populates="ics_206",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
+    hospitals: List["Hospitals"] = Relationship(
+        back_populates="ics_206", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
     ics_206_preparation: Optional["Ics206Preparation"] = Relationship(
         back_populates="ics_206"
     )
@@ -33,7 +40,7 @@ class MedicalAidStation(SQLModel, table=True):
     __tablename__ = "medical_aid_station"
 
     id: int = Field(default=None, primary_key=True)
-    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id")
+    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     name: str
     location: str
     number: str
@@ -46,7 +53,7 @@ class Transportation(SQLModel, table=True):
     __tablename__ = "transportation"
 
     id: int = Field(default=None, primary_key=True)
-    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id")
+    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     ambulance_sercvice: str
     location: str
     number: str
@@ -60,7 +67,7 @@ class Hospitals(SQLModel, table=True):
     __tablename__ = "hospitals"
 
     id: int = Field(default=None, primary_key=True)
-    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id")
+    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     name: str
     address: str
     number: str
@@ -78,7 +85,7 @@ class Ics206Preparation(SQLModel, table=True):
     __tablename__ = "ics_206_preparation"
 
     id: int = Field(default=None, primary_key=True)
-    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id")
+    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     medical_unit_leader_id: Optional[int] = Field(
         default=None, foreign_key="medical_unit_leader.id"
     )
@@ -96,7 +103,7 @@ class Ics206Approval(SQLModel, table=True):
     __tablename__ = "ics_206_approval"
 
     id: int = Field(default=None, primary_key=True)
-    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id")
+    ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     safety_officer_id: Optional[int] = Field(
         default=None, foreign_key="safety_officer.id"
     )
