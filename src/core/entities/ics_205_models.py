@@ -13,7 +13,7 @@ class Ics205(SQLModel, table=True):
     )
     special_instructions: str
 
-    radio_channel: List["RadioChannel"] = Relationship(back_populates="ics_205")
+    ics_205_radio_channel: List["Ics205RadioChannel"] = Relationship(back_populates="ics_205")
     ics_205_preparation: Optional["Ics205Preparation"] = Relationship(
         back_populates="ics_205"
     )
@@ -22,8 +22,8 @@ class Ics205(SQLModel, table=True):
     )
 
 
-class RadioChannel(SQLModel, table=True):
-    __tablename__ = "radio_channel"
+class Ics205RadioChannel(SQLModel, table=True):
+    __tablename__ = "ics_205_radio_channel"
 
     id: int = Field(default=None, primary_key=True)
     ics_205_id: Optional[int] = Field(default=None, foreign_key="ics_205.id")
@@ -35,7 +35,7 @@ class RadioChannel(SQLModel, table=True):
     assignment: str
     remarks: str
 
-    ics_205: Optional["Ics205"] = Relationship(back_populates="radio_channel")
+    ics_205: Optional["Ics205"] = Relationship(back_populates="ics_205_radio_channel")
 
 
 class Ics205Preparation(SQLModel, table=True):
