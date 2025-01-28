@@ -16,9 +16,14 @@ from src.core.exceptions import NotFoundException, BadRequestException
 class HospitalsBase(SQLModel):
     ics_206_id: Optional[int] = None
     name: str
-    location: str
+    address: str
     number: str
-    is_paramedic: Optional[bool]
+    air_travel_time: Optional[int]
+    ground_travel_time: Optional[int]
+    is_trauma_center: Optional[bool]
+    level_trauma_center: Optional[str]
+    is_burn_center: Optional[bool]
+    is_helipad: Optional[bool]
     
 
 class HospitalsCreate(SQLModel):
