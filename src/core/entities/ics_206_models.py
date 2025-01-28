@@ -8,7 +8,7 @@ class Ics206(SQLModel, table=True):
 
     id: int = Field(default=None, primary_key=True)
     operational_period_id: Optional[int] = Field(
-        default=None, foreign_key="operational_period.id"
+        default=None, foreign_key="operational_period.id", ondelete="CASCADE"
     )
     special_medical_procedures: str
     is_utilized: Optional[bool]
@@ -26,10 +26,12 @@ class Ics206(SQLModel, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
     ics_206_preparation: Optional["Ics206Preparation"] = Relationship(
-        back_populates="ics_206"
+        back_populates="ics_206",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
     ics_206_approval: Optional["Ics206Approval"] = Relationship(
-        back_populates="ics_206"
+        back_populates="ics_206",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
     operational_period: Optional["OperationalPeriod"] = Relationship(
         back_populates="ics_206"
@@ -87,7 +89,7 @@ class Ics206Preparation(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     medical_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="medical_unit_leader.id"
+        default=None, foreign_key="medical_unit_leader.id", ondelete="CASCADE"
     )
     is_prepared: bool
     # date_prepared: Optional[date]
@@ -105,7 +107,7 @@ class Ics206Approval(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
     safety_officer_id: Optional[int] = Field(
-        default=None, foreign_key="safety_officer.id"
+        default=None, foreign_key="safety_officer.id", ondelete="CASCADE"
     )
     is_approved: bool
     # date_approved: Optional[date]
