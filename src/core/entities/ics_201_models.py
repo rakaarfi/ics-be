@@ -24,7 +24,7 @@ class Ics201(SQLModel, table=True):
         back_populates="ics_201",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
-    ics_201_approval: List["Ics201Approval"] = Relationship(
+    ics_201_approval: Optional["Ics201Approval"] = Relationship(
         back_populates="ics_201",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
@@ -73,6 +73,8 @@ class Ics201Approval(SQLModel, table=True):
     date_approved: date
     time_approved: time = Field(sa_column=Field(sa_type=Time))
     is_approved: bool
+    
+    ics_201: Optional["Ics201"] = Relationship(back_populates="ics_201_approval")
 
 
 class Ics201Chart(SQLModel, table=True):
