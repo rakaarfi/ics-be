@@ -13,15 +13,15 @@ class Ics206(SQLModel, table=True):
     special_medical_procedures: str
     is_utilized: Optional[bool]
 
-    medical_aid_stations: List["MedicalAidStation"] = Relationship(
+    ics_206_medical_aid_station: List["Ics206MedicalAidStation"] = Relationship(
         back_populates="ics_206",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
-    transportation: List["Transportation"] = Relationship(
+    ics_206_transportation: List["Ics206Transportation"] = Relationship(
         back_populates="ics_206",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
-    hospitals: List["Hospitals"] = Relationship(
+    ics_206_hospitals: List["Ics206Hospitals"] = Relationship(
         back_populates="ics_206", 
         sa_relationship_kwargs={"cascade": "all, delete-orphan"}
     )
@@ -36,8 +36,8 @@ class Ics206(SQLModel, table=True):
     )
 
 
-class MedicalAidStation(SQLModel, table=True):
-    __tablename__ = "medical_aid_station"
+class Ics206MedicalAidStation(SQLModel, table=True):
+    __tablename__ = "ics_206_medical_aid_station"
 
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
@@ -46,11 +46,11 @@ class MedicalAidStation(SQLModel, table=True):
     number: str
     is_paramedic: Optional[bool]
 
-    ics_206: Optional["Ics206"] = Relationship(back_populates="medical_aid_stations")
+    ics_206: Optional["Ics206"] = Relationship(back_populates="ics_206_medical_aid_station")
 
 
-class Transportation(SQLModel, table=True):
-    __tablename__ = "transportation"
+class Ics206Transportation(SQLModel, table=True):
+    __tablename__ = "ics_206_transportation"
 
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
@@ -60,11 +60,11 @@ class Transportation(SQLModel, table=True):
     is_als: Optional[bool]
     is_bls: Optional[bool]
 
-    ics_206: Optional["Ics206"] = Relationship(back_populates="transportation")
+    ics_206: Optional["Ics206"] = Relationship(back_populates="ics_206_transportation")
 
 
-class Hospitals(SQLModel, table=True):
-    __tablename__ = "hospitals"
+class Ics206Hospitals(SQLModel, table=True):
+    __tablename__ = "ics_206_hospitals"
 
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
@@ -78,7 +78,7 @@ class Hospitals(SQLModel, table=True):
     is_burn_center: Optional[bool]
     is_helipad: Optional[bool]
 
-    ics_206: Optional["Ics206"] = Relationship(back_populates="hospitals")
+    ics_206: Optional["Ics206"] = Relationship(back_populates="ics_206_hospitals")
 
 
 class Ics206Preparation(SQLModel, table=True):
