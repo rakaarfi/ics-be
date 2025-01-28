@@ -13,7 +13,8 @@ class Ics203(SQLModel, table=True):
     )
 
     ics_203_preparation: Optional["Ics203Preparation"] = Relationship(
-        back_populates="ics_203"
+        back_populates="ics_203",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     operational_period: Optional["OperationalPeriod"] = Relationship(
         back_populates="ics_203"
@@ -21,91 +22,91 @@ class Ics203(SQLModel, table=True):
 
     # Foreign keys for main_section.py
     incident_commander_id: Optional[int] = Field(
-        default=None, foreign_key="incident_commander.id"
+        default=None, foreign_key="incident_commander.id", ondelete="CASCADE"
     )
     deputy_incident_commander_id: Optional[int] = Field(
-        default=None, foreign_key="deputy_incident_commander.id"
+        default=None, foreign_key="deputy_incident_commander.id", ondelete="CASCADE"
     )
     safety_officer_id: Optional[int] = Field(
-        default=None, foreign_key="safety_officer.id"
+        default=None, foreign_key="safety_officer.id", ondelete="CASCADE"
     )
     public_information_officer_id: Optional[int] = Field(
-        default=None, foreign_key="public_information_officer.id"
+        default=None, foreign_key="public_information_officer.id", ondelete="CASCADE"
     )
     liaison_officer_id: Optional[int] = Field(
-        default=None, foreign_key="liaison_officer.id"
+        default=None, foreign_key="liaison_officer.id", ondelete="CASCADE"
     )
     legal_officer_id: Optional[int] = Field(
-        default=None, foreign_key="legal_officer.id"
+        default=None, foreign_key="legal_officer.id", ondelete="CASCADE"
     )
     human_capital_officer_id: Optional[int] = Field(
-        default=None, foreign_key="human_capital_officer.id"
+        default=None, foreign_key="human_capital_officer.id", ondelete="CASCADE"
     )
     operation_section_chief_id: Optional[int] = Field(
-        default=None, foreign_key="operation_section_chief.id"
+        default=None, foreign_key="operation_section_chief.id", ondelete="CASCADE"
     )
 
     # Foreign keys for planning_section.py
     planning_section_chief_id: Optional[int] = Field(
-        default=None, foreign_key="planning_section_chief.id"
+        default=None, foreign_key="planning_section_chief.id", ondelete="CASCADE"
     )
     situation_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="situation_unit_leader.id"
+        default=None, foreign_key="situation_unit_leader.id", ondelete="CASCADE"
     )
     resources_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="resources_unit_leader.id"
+        default=None, foreign_key="resources_unit_leader.id", ondelete="CASCADE"
     )
     documentation_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="documentation_unit_leader.id"
+        default=None, foreign_key="documentation_unit_leader.id", ondelete="CASCADE"
     )
     demobilization_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="demobilization_unit_leader.id"
+        default=None, foreign_key="demobilization_unit_leader.id", ondelete="CASCADE"
     )
     environmental_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="environmental_unit_leader.id"
+        default=None, foreign_key="environmental_unit_leader.id", ondelete="CASCADE"
     )
     technical_specialist_id: Optional[int] = Field(
-        default=None, foreign_key="technical_specialist.id"
+        default=None, foreign_key="technical_specialist.id", ondelete="CASCADE"
     )
 
     # Foreign keys for logistic_section.py
     logistic_section_chief_id: Optional[int] = Field(
-        default=None, foreign_key="logistic_section_chief.id"
+        default=None, foreign_key="logistic_section_chief.id", ondelete="CASCADE"
     )
     communication_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="communication_unit_leader.id"
+        default=None, foreign_key="communication_unit_leader.id", ondelete="CASCADE"
     )
     medical_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="medical_unit_leader.id"
+        default=None, foreign_key="medical_unit_leader.id", ondelete="CASCADE"
     )
     food_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="food_unit_leader.id"
+        default=None, foreign_key="food_unit_leader.id", ondelete="CASCADE"
     )
     facility_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="facility_unit_leader.id"
+        default=None, foreign_key="facility_unit_leader.id", ondelete="CASCADE"
     )
     supply_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="supply_unit_leader.id"
+        default=None, foreign_key="supply_unit_leader.id", ondelete="CASCADE"
     )
     transportation_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="transportation_unit_leader.id"
+        default=None, foreign_key="transportation_unit_leader.id", ondelete="CASCADE"
     )
 
     # Foreign keys for finance_section.py
     finance_section_chief_id: Optional[int] = Field(
-        default=None, foreign_key="finance_section_chief.id"
+        default=None, foreign_key="finance_section_chief.id", ondelete="CASCADE"
     )
     procurement_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="procurement_unit_leader.id"
+        default=None, foreign_key="procurement_unit_leader.id", ondelete="CASCADE"
     )
     compensation_claim_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="compensation_claim_unit_leader.id"
+        default=None, foreign_key="compensation_claim_unit_leader.id", ondelete="CASCADE"
     )
     cost_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="cost_unit_leader.id"
+        default=None, foreign_key="cost_unit_leader.id", ondelete="CASCADE"
     )
     time_unit_leader_id: Optional[int] = Field(
-        default=None, foreign_key="time_unit_leader.id"
+        default=None, foreign_key="time_unit_leader.id", ondelete="CASCADE"
     )
 
     # Relationships to tables in main_section.py
@@ -196,7 +197,7 @@ class Ics203Preparation(SQLModel, table=True):
     __tablename__ = "ics_203_preparation"
 
     id: int = Field(default=None, primary_key=True)
-    ics_203_id: Optional[int] = Field(default=None, foreign_key="ics_203.id")
+    ics_203_id: Optional[int] = Field(default=None, foreign_key="ics_203.id", ondelete="CASCADE")
     name: str
     position_title: str
     is_prepared: bool
