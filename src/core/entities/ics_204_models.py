@@ -27,10 +27,10 @@ class Ics204(SQLModel, table=True):
     communication_mode: str
     mobile_phone: str
 
-    personnel_assigned: List["PersonnelAssigned"] = Relationship(
+    ics_204_personnel_assigned: List["Ics204PersonnelAssigned"] = Relationship(
         back_populates="ics_204"
     )
-    equipment_assigned: List["EquipmentAssigned"] = Relationship(
+    ics_204_equipment_assigned: List["Ics204EquipmentAssigned"] = Relationship(
         back_populates="ics_204"
     )
     ics_204_preparation: Optional["Ics204Preparation"] = Relationship(
@@ -41,8 +41,8 @@ class Ics204(SQLModel, table=True):
     )
 
 
-class PersonnelAssigned(SQLModel, table=True):
-    __tablename__ = "personnel_assigned"
+class Ics204PersonnelAssigned(SQLModel, table=True):
+    __tablename__ = "ics_204_personnel_assigned"
 
     id: int = Field(default=None, primary_key=True)
     ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id")
@@ -51,11 +51,11 @@ class PersonnelAssigned(SQLModel, table=True):
     location: str
     equipment_tools_remarks: str
 
-    ics_204: Optional["Ics204"] = Relationship(back_populates="personnel_assigned")
+    ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_personnel_assigned")
 
 
-class EquipmentAssigned(SQLModel, table=True):
-    __tablename__ = "equipment_assigned"
+class Ics204EquipmentAssigned(SQLModel, table=True):
+    __tablename__ = "ics_204_equipment_assigned"
 
     id: int = Field(default=None, primary_key=True)
     ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id")
@@ -66,7 +66,7 @@ class EquipmentAssigned(SQLModel, table=True):
     location: str
     remarks: str
 
-    ics_204: Optional["Ics204"] = Relationship(back_populates="equipment_assigned")
+    ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_equipment_assigned")
 
 
 class Ics204Preparation(SQLModel, table=True):
