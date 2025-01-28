@@ -28,13 +28,16 @@ class Ics204(SQLModel, table=True):
     mobile_phone: str
 
     ics_204_personnel_assigned: List["Ics204PersonnelAssigned"] = Relationship(
-        back_populates="ics_204"
+        back_populates="ics_204",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_204_equipment_assigned: List["Ics204EquipmentAssigned"] = Relationship(
-        back_populates="ics_204"
+        back_populates="ics_204",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_204_preparation: Optional["Ics204Preparation"] = Relationship(
-        back_populates="ics_204"
+        back_populates="ics_204",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     operational_period: Optional["OperationalPeriod"] = Relationship(
         back_populates="ics_204"
@@ -45,7 +48,7 @@ class Ics204PersonnelAssigned(SQLModel, table=True):
     __tablename__ = "ics_204_personnel_assigned"
 
     id: int = Field(default=None, primary_key=True)
-    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id")
+    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id", ondelete="CASCADE")
     name: str
     number: str
     location: str
@@ -58,7 +61,7 @@ class Ics204EquipmentAssigned(SQLModel, table=True):
     __tablename__ = "ics_204_equipment_assigned"
 
     id: int = Field(default=None, primary_key=True)
-    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id")
+    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id", ondelete="CASCADE")
     kind: str
     quantity: int
     type_specification: str
@@ -73,7 +76,7 @@ class Ics204Preparation(SQLModel, table=True):
     __tablename__ = "ics_204_preparation"
 
     id: int = Field(default=None, primary_key=True)
-    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id")
+    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id", ondelete="CASCADE")
     name: str
     is_prepared: bool
     date_prepared: Optional[date]
