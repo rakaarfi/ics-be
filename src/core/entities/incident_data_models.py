@@ -28,16 +28,20 @@ class IncidentData(SQLModel, table=True):
 
     # Relasi ke OperationalPeriod
     operational_period: List["OperationalPeriod"] = Relationship(
-        back_populates="incident_data"
+        back_populates="incident_data",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
-    ics_201: List["Ics201"] = Relationship(back_populates="incident_data")
+    ics_201: List["Ics201"] = Relationship(
+        back_populates="incident_data",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
 
 
 class OperationalPeriod(SQLModel, table=True):
     __tablename__ = "operational_period"
 
     id: int = Field(default=None, primary_key=True)
-    incident_id: Optional[int] = Field(default=None, foreign_key="incident_data.id")
+    incident_id: Optional[int] = Field(default=None, foreign_key="incident_data.id", ondelete="CASCADE")
     date_from: date
     time_from: time = Field(sa_column=Field(sa_type=Time))
     date_to: date
@@ -49,12 +53,24 @@ class OperationalPeriod(SQLModel, table=True):
         back_populates="operational_period"
     )
 
-    ics_202: List["Ics202"] = Relationship(back_populates="operational_period")
-    ics_203: List["Ics203"] = Relationship(back_populates="operational_period")
-    ics_204: List["Ics204"] = Relationship(back_populates="operational_period")
-    ics_205: List["Ics205"] = Relationship(back_populates="operational_period")
-    ics_206: List["Ics206"] = Relationship(back_populates="operational_period")
-    ics_208: List["Ics208"] = Relationship(back_populates="operational_period")
+    ics_202: List["Ics202"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_203: List["Ics203"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_204: List["Ics204"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_205: List["Ics205"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_206: List["Ics206"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_208: List["Ics208"] = Relationship(
+        back_populates="operational_period", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
 
     @field_validator("time_to")
     @classmethod
