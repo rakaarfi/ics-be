@@ -6,7 +6,7 @@ from sqlmodel import select
 
 from src.infrastructure.config.database import get_session
 from src.infrastructure.database.repositories.base_repository import BaseRepository
-from src.core.entities.ics_201_models import IcsChart
+from src.core.entities.ics_201_models import Ics201Chart
 from src.core.entities.pagination_models import PaginationResponse
 from src.core.exceptions import NotFoundException, BadRequestException
 
@@ -22,22 +22,22 @@ def get_repository(session: AsyncSession = Depends(get_session)) -> BaseReposito
     "/create/", summary="Create Ics Chart", description="Create a new Ics Chart"
 )
 async def create_ics_chart(
-    item: IcsChart, repo: BaseRepository = Depends(get_repository)
+    item: Ics201Chart, repo: BaseRepository = Depends(get_repository)
 ):
-    return await repo.create_item(IcsChart, item)
+    return await repo.create_item(Ics201Chart, item)
 
 
 # Endpoint untuk read
 @router.get("/read/")
 async def read_ics_chart(repo: BaseRepository = Depends(get_repository)):
-    return await repo.read_items(IcsChart)
+    return await repo.read_items(Ics201Chart)
 
 
 # Endpoint untuk read by id
 @router.get("/read/{id}")
 async def read_ics_chart_by_id(id: int, repo: BaseRepository = Depends(get_repository)):
     try:
-        return await repo.read_item_by_id(IcsChart, id)
+        return await repo.read_item_by_id(Ics201Chart, id)
     except NotFoundException as e:
         raise e
 
@@ -45,10 +45,10 @@ async def read_ics_chart_by_id(id: int, repo: BaseRepository = Depends(get_repos
 # Endpoint untuk update
 @router.put("/update/{id}")
 async def update_ics_chart(
-    update_data: IcsChart, id: int, repo: BaseRepository = Depends(get_repository)
+    update_data: Ics201Chart, id: int, repo: BaseRepository = Depends(get_repository)
 ):
     try:
-        return await repo.update_item(IcsChart, id, update_data)
+        return await repo.update_item(Ics201Chart, id, update_data)
     except NotFoundException as e:
         raise e
 
@@ -57,13 +57,13 @@ async def update_ics_chart(
 @router.delete("/delete/{id}")
 async def delete_ics_chart(id: int, repo: BaseRepository = Depends(get_repository)):
     try:
-        return await repo.delete_item(IcsChart, id)
+        return await repo.delete_item(Ics201Chart, id)
     except NotFoundException as e:
         raise e
 
 
 # Endpoint untuk read paginated
-@router.get("/read-paginated/", response_model=PaginationResponse[List[IcsChart]])
+@router.get("/read-paginated/", response_model=PaginationResponse[List[Ics201Chart]])
 async def read_ics_chart_paginated(
     page: int = 1,
     limit: int = 10,
@@ -72,13 +72,13 @@ async def read_ics_chart_paginated(
 ):
     condition = None
 
-    return await repo.read_paginated_items(IcsChart, page, limit, condition)
+    return await repo.read_paginated_items(Ics201Chart, page, limit, condition)
 
 
 # Endpoint untuk read by ics_201_id
-@router.get("/read-by-ics-id/{ics_201_id}", response_model=List[IcsChart])
+@router.get("/read-by-ics-id/{ics_201_id}", response_model=List[Ics201Chart])
 async def read_ics_chart_by_ics_id(
     ics_201_id: int, repo: BaseRepository = Depends(get_repository)
 ):
-    condition = IcsChart.ics_201_id == ics_201_id
-    return await repo.read_items_by_condition(IcsChart, condition)
+    condition = Ics201Chart.ics_201_id == ics_201_id
+    return await repo.read_items_by_condition(Ics201Chart, condition)

@@ -9,13 +9,13 @@ from sqlmodel import SQLModel, func, select
 
 from src.infrastructure.config.database import get_session
 from src.infrastructure.database.repositories.base_repository import BaseRepository
-from src.core.entities.ics_201_models import ResourceSummary
+from src.core.entities.ics_201_models import Ics201ResourceSummary
 from src.core.entities.pagination_models import PaginationResponse
 from src.core.exceptions import NotFoundException, BadRequestException
 
 
 # Define a new model to allow the creation of multiple entries in a single API request
-class ResourceSummaryBase(SQLModel):
+class Ics201ResourceSummaryBase(SQLModel):
     resource: str
     resource_identified: str
     date_ordered: date
@@ -26,11 +26,11 @@ class ResourceSummaryBase(SQLModel):
     ics_201_id: Optional[int] = None
 
 
-class ResourceSummaryCreate(SQLModel):
-    datas: List[ResourceSummaryBase]
+class Ics201ResourceSummaryCreate(SQLModel):
+    datas: List[Ics201ResourceSummaryBase]
 
 
-class ResourceSummaryDelete(BaseModel):
+class Ics201ResourceSummaryDelete(BaseModel):
     ids: list[int]
 
 
@@ -48,15 +48,15 @@ def get_repository(session: AsyncSession = Depends(get_session)) -> BaseReposito
     description="Create a new Resource Summary",
 )
 async def create_resource_summary(
-    item: ResourceSummaryCreate, repo: BaseRepository = Depends(get_repository)
+    item: Ics201ResourceSummaryCreate, repo: BaseRepository = Depends(get_repository)
 ):
-    return await repo.create_items(ResourceSummary, item.datas)
+    return await repo.create_items(Ics201ResourceSummary, item.datas)
 
 
 # Endpoint untuk read
 @router.get("/read/")
 async def read_resource_summary(repo: BaseRepository = Depends(get_repository)):
-    return await repo.read_items(ResourceSummary)
+    return await repo.read_items(Ics201ResourceSummary)
 
 # Endpoint untuk read by id
 @router.get("/read/{id}")
@@ -64,7 +64,7 @@ async def read_resource_summary_by_id(
     id: int, repo: BaseRepository = Depends(get_repository)
 ):
     try:
-        return await repo.read_item_by_id(ResourceSummary, id)
+        return await repo.read_item_by_id(Ics201ResourceSummary, id)
     except NotFoundException as e:
         raise e
     
@@ -72,10 +72,10 @@ async def read_resource_summary_by_id(
 # Endpoint untuk update
 @router.put("/update/{id}")
 async def update_resource_summary(
-    updated_data: ResourceSummary, id: int, repo: BaseRepository = Depends(get_repository)
+    updated_data: Ics201ResourceSummary, id: int, repo: BaseRepository = Depends(get_repository)
 ):
     try:
-        return await repo.update_item(ResourceSummary, id, updated_data)
+        return await repo.update_item(Ics201ResourceSummary, id, updated_data)
     except NotFoundException as e:
         raise e
 
@@ -85,7 +85,7 @@ async def delete_resource_summary(
     id: int, repo: BaseRepository = Depends(get_repository)
 ):
     try:
-        return await repo.delete_item(ResourceSummary, id)
+        return await repo.delete_item(Ics201ResourceSummary, id)
     except NotFoundException as e:
         raise e
     
@@ -93,14 +93,14 @@ async def delete_resource_summary(
 # Endpoint untuk delete multiple
 @router.delete("/delete-many/")
 async def delete_multiple_resource_summary(
-    ids: ResourceSummaryDelete, repo: BaseRepository = Depends(get_repository)
+    ids: Ics201ResourceSummaryDelete, repo: BaseRepository = Depends(get_repository)
 ):
-    return await repo.delete_items_by_ids(ResourceSummary, ids.ids)
+    return await repo.delete_items_by_ids(Ics201ResourceSummary, ids.ids)
 
 
 # Endpoint untuk read paginated
 @router.get(
-    "/read-paginated/", response_model=PaginationResponse[List[ResourceSummary]]
+    "/read-paginated/", response_model=PaginationResponse[List[Ics201ResourceSummary]]
 )
 async def read_resource_summary_paginated(
     page: int = 1,
@@ -113,25 +113,25 @@ async def read_resource_summary_paginated(
     if search:
         search_lower = f"%{search.lower()}%"
         condition = (
-            func.lower(ResourceSummary.resource).like(search_lower)
-            | func.lower(ResourceSummary.resource_identified).like(search_lower)
-            | func.lower(func.to_char(ResourceSummary.date_ordered, "YYYY-MM-DD")).like(
+            func.lower(Ics201ResourceSummary.resource).like(search_lower)
+            | func.lower(Ics201ResourceSummary.resource_identified).like(search_lower)
+            | func.lower(func.to_char(Ics201ResourceSummary.date_ordered, "YYYY-MM-DD")).like(
                 search_lower
             )
-            | func.lower(func.to_char(ResourceSummary.time_ordered, "HH24:MI")).like(
+            | func.lower(func.to_char(Ics201ResourceSummary.time_ordered, "HH24:MI")).like(
                 search_lower
             )
-            | func.lower(ResourceSummary.eta).like(search_lower)
-            | func.lower(ResourceSummary.notes).like(search_lower)
+            | func.lower(Ics201ResourceSummary.eta).like(search_lower)
+            | func.lower(Ics201ResourceSummary.notes).like(search_lower)
         )
 
-    return await repo.read_paginated_items(ResourceSummary, page, limit, condition)
+    return await repo.read_paginated_items(Ics201ResourceSummary, page, limit, condition)
 
 
 # Endpoint untuk read by ics_201_id
-@router.get("/read-by-ics-201-id/{ics_201_id}", response_model=List[ResourceSummary])
+@router.get("/read-by-ics-201-id/{ics_201_id}", response_model=List[Ics201ResourceSummary])
 async def read_resource_summary_by_ics_201_id(
     ics_201_id: int, repo: BaseRepository = Depends(get_repository)
 ):
-    condition = ResourceSummary.ics_201_id == ics_201_id
-    return await repo.read_items_by_condition(ResourceSummary, condition)
+    condition = Ics201ResourceSummary.ics_201_id == ics_201_id
+    return await repo.read_items_by_condition(Ics201ResourceSummary, condition)
