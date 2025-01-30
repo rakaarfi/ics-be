@@ -1,6 +1,7 @@
 from datetime import date, time
 from typing import List, Optional
 
+from sqlalchemy import Time
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -50,7 +51,7 @@ class Ics205Preparation(SQLModel, table=True):
     )
     is_prepared: bool
     date_prepared: Optional[date]
-    time_prepared: Optional[time]
+    time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     communication_unit_leader: Optional["CommunicationUnitLeader"] = Relationship(
         back_populates="ics_205_preparation"
