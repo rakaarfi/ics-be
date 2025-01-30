@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from sqlalchemy import Time
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -92,8 +93,8 @@ class Ics206Preparation(SQLModel, table=True):
         default=None, foreign_key="medical_unit_leader.id", ondelete="CASCADE"
     )
     is_prepared: bool
-    # date_prepared: Optional[date]
-    # time_prepared: Optional[time]
+    date_prepared: Optional[date]
+    time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     medical_unit_leader: Optional["MedicalUnitLeader"] = Relationship(
         back_populates="ics_206_preparation"
@@ -110,8 +111,8 @@ class Ics206Approval(SQLModel, table=True):
         default=None, foreign_key="safety_officer.id", ondelete="CASCADE"
     )
     is_approved: bool
-    # date_approved: Optional[date]
-    # time_approved: Optional[time]
+    date_approved: Optional[date]
+    time_approved: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     safety_officer: Optional["SafetyOfficer"] = Relationship(
         back_populates="ics_206_approval"
