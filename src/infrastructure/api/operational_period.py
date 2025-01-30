@@ -139,3 +139,12 @@ async def read_operational_period_with_pagination(
         )
 
     return await repo.read_paginated_items(OperationalPeriod, page, limit, condition)
+
+
+# Endpoint untuk read by incident_id
+@router.get("/read-by-incident/{incident_id}")
+async def read_operational_period_by_incident_id(
+    incident_id: int, repo: BaseRepository = Depends(get_repository)
+):
+    condition = OperationalPeriod.incident_id == incident_id
+    return await repo.read_items_by_condition(OperationalPeriod, condition)
