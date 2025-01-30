@@ -1,6 +1,7 @@
 from datetime import date, time
 from typing import Optional
 
+from sqlalchemy import Time
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -198,10 +199,14 @@ class Ics203Preparation(SQLModel, table=True):
 
     id: int = Field(default=None, primary_key=True)
     ics_203_id: Optional[int] = Field(default=None, foreign_key="ics_203.id", ondelete="CASCADE")
-    name: str
-    position_title: str
+    resources_unit_leader_id: Optional[int] = Field(
+        default=None, foreign_key="resources_unit_leader.id", ondelete="CASCADE"
+    )
     is_prepared: bool
     date_prepared: Optional[date]
-    time_prepared: Optional[time]
+    time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     ics_203: Optional["Ics203"] = Relationship(back_populates="ics_203_preparation")
+    resources_unit_leader: Optional["ResourcesUnitLeader"] = Relationship(
+        back_populates="ics_203_preparation"
+    )
