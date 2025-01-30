@@ -71,13 +71,6 @@ class OperationalPeriod(SQLModel, table=True):
     ics_208: List["Ics208"] = Relationship(
         back_populates="operational_period", 
         sa_relationship_kwargs={"cascade": "all, delete-orphan"})
-
-    @field_validator("time_to")
-    @classmethod
-    def check_time_to(cls, value: date, values) -> date:
-        if value and "time_from" in values.data and value < values.data["time_from"]:
-            raise ValueError("Time to cannot be earlier than time from")
-        return value
     
     @field_validator("date_to")
     @classmethod
