@@ -1,6 +1,7 @@
 from datetime import date, time
 from typing import Optional
 
+from sqlalchemy import Time
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -49,7 +50,7 @@ class Ics202Preparation(SQLModel, table=True):
     )
     is_prepared: bool
     date_prepared: Optional[date]
-    time_prepared: Optional[time]
+    time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     planning_section_chief: Optional["PlanningSectionChief"] = Relationship(
         back_populates="ics_202_preparation"
@@ -67,7 +68,7 @@ class Ics202Approval(SQLModel, table=True):
     )
     is_approved: bool
     date_approved: Optional[date]
-    time_approved: Optional[time]
+    time_approved: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
     incident_commander: Optional["IncidentCommander"] = Relationship(
         back_populates="ics_202_approval"
