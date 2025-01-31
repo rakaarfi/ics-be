@@ -1,4 +1,5 @@
 from typing import List, Optional
+from datetime import date, time
 
 from sqlalchemy import Time
 from sqlmodel import Field, Relationship, SQLModel
