@@ -12,8 +12,9 @@ class Ics204(SQLModel, table=True):
     operational_period_id: Optional[int] = Field(
         default=None, foreign_key="operational_period.id"
     )
-    operation_section_chief_name: str
-    operation_section_chief_number: str
+    operation_section_chief_id: Optional[int] = Field(
+        default=None, foreign_key="operation_section_chief.id"
+    )
     branch_director_name: str
     branch_director_number: str
     division_supervisor_name: str
@@ -36,11 +37,18 @@ class Ics204(SQLModel, table=True):
         back_populates="ics_204",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
-    ics_204_preparation: Optional["Ics204Preparation"] = Relationship(
+    ics_204_preparation_os_chief: Optional["Ics204PreparationOSChief"] = Relationship(
+        back_populates="ics_204",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_204_preparation_ru_leader: Optional["Ics204PreparationRULeader"] = Relationship(
         back_populates="ics_204",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     operational_period: Optional["OperationalPeriod"] = Relationship(
+        back_populates="ics_204"
+    )
+    operation_section_chief: Optional["OperationSectionChief"] = Relationship(
         back_populates="ics_204"
     )
 
@@ -73,14 +81,37 @@ class Ics204EquipmentAssigned(SQLModel, table=True):
     ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_equipment_assigned")
 
 
-class Ics204Preparation(SQLModel, table=True):
-    __tablename__ = "ics_204_preparation"
+class Ics204PreparationRULeader(SQLModel, table=True):
+    __tablename__ = "ics_204_preparation_ru_leader"
 
     id: int = Field(default=None, primary_key=True)
     ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id", ondelete="CASCADE")
-    name: str
+    resources_unit_leader_id: Optional[int] = Field(
+        default=None, foreign_key="resources_unit_leader.id", ondelete="CASCADE"
+    )
     is_prepared: bool
     date_prepared: Optional[date]
     time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
 
-    ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_preparation")
+    resources_unit_leader : Optional["ResourcesUnitLeader"] = Relationship(
+        back_populates="ics_204_preparation_ru_leader"
+    )
+    ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_preparation_ru_leader")
+
+
+class Ics204PreparationOSChief(SQLModel, table=True):
+    __tablename__ = "ics_204_preparation_os_chief"
+
+    id: int = Field(default=None, primary_key=True)
+    ics_204_id: Optional[int] = Field(default=None, foreign_key="ics_204.id", ondelete="CASCADE")
+    operation_section_chief_id: Optional[int] = Field(
+        default=None, foreign_key="operation_section_chief.id", ondelete="CASCADE"
+    )
+    is_prepared: bool
+    date_prepared: Optional[date]
+    time_prepared: Optional[time] = Field(sa_column=Field(sa_type=Time))
+
+    operation_section_chief : Optional["OperationSectionChief"] = Relationship(
+        back_populates="ics_204_preparation_os_chief"
+    )
+    ics_204: Optional["Ics204"] = Relationship(back_populates="ics_204_preparation_os_chief")
