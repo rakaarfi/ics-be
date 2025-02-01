@@ -75,8 +75,8 @@ class Ics206Hospitals(SQLModel, table=True):
     name: str
     address: str
     number: str
-    air_travel_time: Optional[int]
-    ground_travel_time: Optional[int]
+    air_travel_time: Optional[str]
+    ground_travel_time: Optional[str]
     is_trauma_center: Optional[bool]
     level_trauma_center: Optional[str]
     is_burn_center: Optional[bool]
