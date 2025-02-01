@@ -6,6 +6,7 @@ from src.core.entities.base_imt_models import BaseImtMember
 from src.core.entities.ics_201_models import Ics201Chart
 from src.core.entities.ics_202_models import Ics202Preparation
 from src.core.entities.ics_203_models import Ics203, Ics203Preparation
+from src.core.entities.ics_204_models import Ics204PreparationRULeader
 from src.core.entities.roster_models import ImtRoster
 
 
@@ -60,6 +61,10 @@ class ResourcesUnitLeader(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_203_preparation: Optional[Ics203Preparation] = Relationship(
+        back_populates="resources_unit_leader",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_204_preparation_ru_leader: Optional[Ics204PreparationRULeader] = Relationship(
         back_populates="resources_unit_leader",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
