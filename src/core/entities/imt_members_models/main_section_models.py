@@ -6,6 +6,7 @@ from src.core.entities.base_imt_models import BaseImtMember
 from src.core.entities.ics_201_models import Ics201Chart
 from src.core.entities.ics_202_models import Ics202Approval
 from src.core.entities.ics_203_models import Ics203
+from src.core.entities.ics_204_models import Ics204, Ics204PreparationOSChief
 from src.core.entities.ics_206_models import Ics206Approval
 from src.core.entities.ics_208_models import Ics208Preparation
 from src.core.entities.roster_models import ImtRoster
@@ -146,6 +147,14 @@ class OperationSectionChief(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_203: List[Ics203] = Relationship(
+        back_populates="operation_section_chief",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_204: Optional[Ics204] = Relationship(
+        back_populates="operation_section_chief",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_204_preparation_os_chief: Optional[Ics204PreparationOSChief] = Relationship(
         back_populates="operation_section_chief",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
