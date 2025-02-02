@@ -1,12 +1,14 @@
 import os
 from datetime import datetime
 from typing import Optional, Type, Any
+from io import BytesIO  # Import BytesIO untuk membuat file di memori
+
 
 from docx.shared import Inches
 from docxtpl import (DocxTemplate,  # Menggunakan docxtpl untuk templating
                      InlineImage)
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select, SQLModel
 
@@ -83,7 +85,7 @@ model_mappings = {
     "time_unit_leader": TimeUnitLeader,
 }
 
-@router.post("/export_docx/{id}")
+@router.post("/{id}")
 async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     template_path = "src/infrastructure/templates/ics_203.docx"
     output_path = f"src/infrastructure/templates/ics_203_{id}.docx"
@@ -130,10 +132,12 @@ async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     doc.render(context)
 
     # Simpan hasil
-    doc.save(output_path)
-
-    return FileResponse(
-        output_path,
+    output_stream = BytesIO()
+    doc.save(output_stream)
+    output_stream.seek(0)  # Kembalikan pointer ke awal stream
+    
+    return StreamingResponse(
+        output_stream,
         media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        filename=f"ics_202_{id}.docx",
+        headers={"Content-Disposition": f"attachment; filename=ics_206_{id}.docx"}
     )
