@@ -58,7 +58,7 @@ class Ics206Transportation(SQLModel, table=True):
 
     id: int = Field(default=None, primary_key=True)
     ics_206_id: Optional[int] = Field(default=None, foreign_key="ics_206.id", ondelete="CASCADE")
-    ambulance_sercvice: str
+    ambulance_service: str
     location: str
     number: str
     is_als: Optional[bool]
