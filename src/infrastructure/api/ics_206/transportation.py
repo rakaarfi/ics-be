@@ -15,7 +15,7 @@ from src.core.exceptions import NotFoundException, BadRequestException
 # Define a new model to allow the creation of multiple entries in a single API request
 class Ics206TransportationBase(SQLModel):
     ics_206_id: Optional[int] = None
-    ambulance_sercvice: str
+    ambulance_service: str
     location: str
     number: str
     is_als: Optional[bool]
@@ -113,7 +113,7 @@ async def read_transportation_paginated(
 
     if search:
         search_lower = f"%{search.lower()}%"
-        condition = func.lower(Ics206Transportation.ambulance_sercvice).like(
+        condition = func.lower(Ics206Transportation.ambulance_service).like(
             search_lower
         ) | func.lower(Ics206Transportation.location).like(
             search_lower
