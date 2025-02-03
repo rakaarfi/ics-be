@@ -9,7 +9,7 @@ from fastapi.responses import FileResponse, JSONResponse
 router = APIRouter()
 
 # Direktori untuk menyimpan file
-UPLOAD_DIRECTORY = Path("uploaded_files")
+UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
 UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada
 
 
