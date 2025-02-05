@@ -9,6 +9,7 @@ from src.core.entities.ics_203_models import Ics203
 from src.core.entities.ics_204_models import Ics204, Ics204PreparationOSChief
 from src.core.entities.ics_206_models import Ics206Approval
 from src.core.entities.ics_208_models import Ics208Preparation
+from src.core.entities.ics_209_models import Ics209, Ics209Approval
 from src.core.entities.roster_models import ImtRoster
 
 
@@ -27,6 +28,14 @@ class IncidentCommander(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_203: List[Ics203] = Relationship(
+        back_populates="incident_commander",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_209: Optional[Ics209] = Relationship(
+        back_populates="incident_commander",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_209_approval: Optional[Ics209Approval] = Relationship(
         back_populates="incident_commander",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
