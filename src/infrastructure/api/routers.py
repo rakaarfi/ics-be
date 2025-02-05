@@ -7,6 +7,7 @@ from src.infrastructure.api.ics_203.ics_203_router import router as ics_203_rout
 from src.infrastructure.api.ics_204.ics_204_router import router as ics_204_router
 from src.infrastructure.api.ics_205.ics_205_router import router as ics_205_router
 from src.infrastructure.api.ics_206.ics_206_router import router as ics_206_router
+from src.infrastructure.api.ics_207.ics_207_router import router as ics_207_router
 from src.infrastructure.api.ics_208.ics_208_router import router as ics_208_router
 from src.infrastructure.api.imt_members.finance_section.finance_router import \
     router as finance_section_router
@@ -37,6 +38,7 @@ routers = [
     (ics_204_router, "/ics-204", ["ICS 204"]),
     (ics_205_router, "/ics-205", ["ICS 205"]),
     (ics_206_router, "/ics-206", ["ICS 206"]),
+    (ics_207_router, "/ics-207", ["ICS 207"]),
     (ics_208_router, "/ics-208", ["ICS 208"]),
 ]
 
