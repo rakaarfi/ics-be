@@ -12,6 +12,7 @@ from src.core.entities.ics_204_models import Ics204
 from src.core.entities.ics_205_models import Ics205
 from src.core.entities.ics_206_models import Ics206
 from src.core.entities.ics_208_models import Ics208
+from src.core.entities.ics_209_models import Ics209
 
 
 class IncidentData(SQLModel, table=True):
@@ -71,6 +72,10 @@ class OperationalPeriod(SQLModel, table=True):
     ics_208: List["Ics208"] = Relationship(
         back_populates="operational_period", 
         sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+    ics_209: List["Ics209"] = Relationship(
+        back_populates="operational_period",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+
     
     @field_validator("date_to")
     @classmethod
