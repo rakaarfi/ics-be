@@ -7,6 +7,7 @@ from src.core.entities.ics_201_models import Ics201Chart
 from src.core.entities.ics_202_models import Ics202Preparation
 from src.core.entities.ics_203_models import Ics203, Ics203Preparation
 from src.core.entities.ics_204_models import Ics204PreparationRULeader
+from src.core.entities.ics_209_models import Ics209Preparation
 from src.core.entities.roster_models import ImtRoster
 
 
@@ -41,6 +42,10 @@ class SituationUnitLeader(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_203: List[Ics203] = Relationship(
+        back_populates="situation_unit_leader",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_209_preparation: Optional[Ics209Preparation] = Relationship(
         back_populates="situation_unit_leader",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
