@@ -81,9 +81,8 @@ async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     
     # Ambil Radio Chennel terkait
     ics_205_radio_channels = await read_items_by_condition(Ics205RadioChannel, Ics205RadioChannel.ics_205_id == ics_205_id, session=session)
-    radio_channel_id = ics_205_radio_channels[0].radio_channel_id
-    radio_channel = await read_item_by_id(Ics205RadioChannel, item_id=radio_channel_id, session=session)
-    context["radio_channel"] = radio_channel
+    ics_205_radio_channels_list = [p.model_dump() for p in ics_205_radio_channels]
+    context["radio_channel"] = ics_205_radio_channels_list
     
     # Ambil Preparation terkait
     ics_205_preparations = await read_items_by_condition(Ics205Preparation, Ics205Preparation.ics_205_id == ics_205_id, session=session)
