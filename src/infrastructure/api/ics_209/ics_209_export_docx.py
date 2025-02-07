@@ -45,10 +45,10 @@ def format_date_to_sentence(date_str):
 
 
 async def read_item_by_id(model: Type[SQLModel], item_id: int, session: AsyncSession):
-        item = await session.get(model, item_id)
-        if not item:
-            raise NotFoundException(f"{model.__name__} not found")
-        return item
+    item = await session.get(model, item_id)
+    if not item:
+        raise NotFoundException(f"{model.__name__} not found")
+    return item
     
 async def read_items_by_condition(model: Type[SQLModel], condition: Any, session: AsyncSession):
     query = select(model).where(condition)
