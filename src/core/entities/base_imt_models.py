@@ -4,6 +4,7 @@ from typing import Optional
 from sqlmodel import Field, SQLModel
 from pydantic import field_validator
 
+
 class BaseImtMember(SQLModel, table=False):
     """
     Base model for Incident Management Team (IMT) members.

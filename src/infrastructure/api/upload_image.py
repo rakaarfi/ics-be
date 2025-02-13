@@ -13,7 +13,7 @@ UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
 UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada
 
 
-@router.post("/upload-map-sketch/")
+@router.post("/upload/")
 async def upload_map_sketch(file: UploadFile = File(...)):
     if not file.content_type.startswith("image/"):
         return {"error": "Invalid file type. Please upload an image."}
@@ -26,7 +26,7 @@ async def upload_map_sketch(file: UploadFile = File(...)):
     return {"filename": file.filename}
 
 
-@router.get("/get-map-sketch/{filename}")
+@router.get("/get/{filename}")
 async def get_map_sketch(filename: str):
     file_path = UPLOAD_DIRECTORY / filename
     if not file_path.exists():
@@ -35,7 +35,7 @@ async def get_map_sketch(filename: str):
 
 
 # Endpoint baru untuk mendapatkan daftar semua file
-@router.get("/list-map-sketches/")
+@router.get("/list/")
 async def list_map_sketches():
     try:
         # Ambil daftar semua file di direktori
@@ -50,7 +50,7 @@ async def list_map_sketches():
 
 
 # Endpoint untuk menghapus file
-@router.delete("/delete-map-sketch/{filename}")
+@router.delete("/delete/{filename}")
 async def delete_map_sketch(filename: str):
     file_path = UPLOAD_DIRECTORY / filename
     if not file_path.exists():
@@ -64,7 +64,7 @@ async def delete_map_sketch(filename: str):
 
 
 # Endpoint untuk memperbarui file
-@router.put("/update-map-sketch/{filename}")
+@router.put("/update/{filename}")
 async def update_map_sketch(filename: str, file: UploadFile = File(...)):
     file_path = UPLOAD_DIRECTORY / filename
     if not file_path.exists():
