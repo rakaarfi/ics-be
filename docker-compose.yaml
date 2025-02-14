@@ -10,3 +10,7 @@ services:
       - DATABASE_URL=
     ports:
       - "8000:8000"
+    network_mode: host
+
+volumes:
+  ics-uploaded-files:
