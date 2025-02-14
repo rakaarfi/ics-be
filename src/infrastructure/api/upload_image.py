@@ -8,6 +8,8 @@ from fastapi.responses import FileResponse, JSONResponse
 # Router untuk upload
 router = APIRouter()
 
+cwd = os.getcwd()
+print(cwd)
 # Direktori untuk menyimpan file
 UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
 UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada

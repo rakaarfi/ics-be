@@ -4,6 +4,7 @@ import aiofiles
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
+
 # Router untuk upload
 router = APIRouter()
 
@@ -19,12 +20,14 @@ async def upload_file(file: UploadFile = File(...)):
             await buffer.write(content)
     return {"filename": file.filename}
 
+
 @router.get("/get/{filename}")
 async def get_file(filename: str):
     file_path = UPLOAD_DIRECTORY / filename
     if not file_path.exists():
         return {"error": "File not found."}
     return FileResponse(file_path)
+
 
 # Endpoint baru untuk mendapatkan daftar semua file
 @router.get("/list/")
@@ -35,6 +38,7 @@ async def list_files():
         return JSONResponse(content={"files": files})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # Endpoint untuk menghapus file
 @router.delete("/delete/{filename}")
@@ -47,6 +51,7 @@ async def delete_file(filename: str):
         return {"message": f"File {filename} berhasil dihapus."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # Endpoint untuk memperbarui file
 @router.put("/update/{filename}")
@@ -67,3 +72,4 @@ async def update_file(filename: str, file: UploadFile = File(...)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
