@@ -19,4 +19,4 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Set entrypoint
-CMD ["uvicorn", "src.main:app", "--port 8000"]
+CMD ["uvicorn", "src.main:app"]
