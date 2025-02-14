@@ -12,7 +12,7 @@ services:
     environment:
       - DATABASE_URL=
     ports:
-      - "8000:8000"
+      - "9000:9000"
     network_mode: host
 
 volumes:
