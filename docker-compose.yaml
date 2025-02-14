@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
     container_name: ics-be-dev
     volumes:
       - ics-uploaded-files:/app/src/infrastructure/storage/uploaded_files
