@@ -19,7 +19,7 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Expose Port
-EXPOSE 9000
+EXPOSE 8000
 
 # Set entrypoint
 CMD ["uvicorn", "src.main:app"]
