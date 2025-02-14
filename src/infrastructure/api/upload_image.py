@@ -11,8 +11,11 @@ router = APIRouter()
 cwd = os.getcwd()
 print(cwd, "++++++++++++++++++++++++++++++++++++++++++++++++++")
 # Direktori untuk menyimpan file
-UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
-UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada
+# UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
+# UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada
+
+UPLOAD_DIRECTORY = Path.cwd() / "src/infrastructure/storage/uploaded_files"
+UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 
 @router.post("/upload/")
