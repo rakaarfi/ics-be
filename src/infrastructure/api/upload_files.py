@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 import aiofiles
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
@@ -9,8 +10,9 @@ from fastapi.responses import FileResponse, JSONResponse
 router = APIRouter()
 
 # Direktori untuk menyimpan file
-UPLOAD_DIRECTORY = Path("src/infrastructure/storage/uploaded_files")
-UPLOAD_DIRECTORY.mkdir(exist_ok=True)  # Membuat folder jika belum ada
+cwd = os.getcwd()
+UPLOAD_DIRECTORY = Path.cwd() / "src/infrastructure/storage/uploaded_files"
+UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 @router.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
