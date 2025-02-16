@@ -22,7 +22,6 @@ from src.infrastructure.api.imt_members.planning_section.planning_router import 
 from src.infrastructure.api.operational_period import router as operational_period_router
 from src.infrastructure.api.roster import router as roster_router
 from src.infrastructure.api.roster_table import router as roster_table_router
-from src.infrastructure.api.upload_image import router as upload_image_router
 from src.infrastructure.api.upload_files import router as upload_files_router
 
 routers = [
@@ -35,7 +34,6 @@ routers = [
     (roster_table_router, "/roster-table", ["IMT Table"]),
     (incident_data_router, "/incident-data", ["Incident Data"]),
     (operational_period_router, "/operational-period", ["Operational Period"]),
-    (upload_image_router, "/image", ["Upload Image"]),
     (upload_files_router, "/file", ["Upload Files"]),
     (ics_201_router, "/ics-201", ["ICS 201"]),
     (ics_202_router, "/ics-202", ["ICS 202"]),
