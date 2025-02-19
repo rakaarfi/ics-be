@@ -29,6 +29,8 @@ def convert_string_to_date_time(item: SQLModel | dict) -> SQLModel:
         "date_ordered",
         "date_approved",
         "date_prepared",
+        "est_completion_date",
+        "est_res_democ_start"
     ]
     time_fields = [
         "time_incident",
