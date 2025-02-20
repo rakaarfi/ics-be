@@ -129,7 +129,7 @@ async def read_resource_summary_paginated(
 
 
 # Endpoint untuk read by ics_201_id
-@router.get("/read-by-ics-201-id/{ics_201_id}", response_model=List[Ics201ResourceSummary])
+@router.get("/read-by-ics-id/{ics_201_id}", response_model=List[Ics201ResourceSummary])
 async def read_resource_summary_by_ics_201_id(
     ics_201_id: int, repo: BaseRepository = Depends(get_repository)
 ):
