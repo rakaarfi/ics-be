@@ -48,5 +48,5 @@ routers = [
 
 def configure_routers(app: FastAPI):
     for router, prefix, tags in routers:
-        app.include_router(router, prefix=prefix, tags=tags)
+        app.include_router(router, prefix=f"/api{prefix}", tags=tags)
 
