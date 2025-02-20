@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 # Load database URL from .env
 DATABASE_URL = config("DATABASE_URL")
+print(DATABASE_URL)
 
 # Create an asynchronous SQLAlchemy engine for PostgreSQL
 engine = create_async_engine(DATABASE_URL, echo=False)
