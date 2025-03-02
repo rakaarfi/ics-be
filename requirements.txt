@@ -14,4 +14,4 @@ selenium>=4.27.1
 sqlalchemy>=2.0.37
 sqlmodel>=0.0.22
 uvicorn[standard]>=0.34.0
-pillow>=11.1.0
+# pillow>=11.1.0
