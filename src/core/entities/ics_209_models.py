@@ -1,7 +1,7 @@
 from datetime import date, time
 from typing import Optional
 
-from sqlalchemy import Time
+from sqlalchemy import Time, BigInteger
 from sqlmodel import Field, Relationship, SQLModel
 
 class Ics209(SQLModel, table=True):
@@ -59,8 +59,8 @@ class Ics209(SQLModel, table=True):
     res_needed: str
     est_completion_date: Optional[date]
     est_res_democ_start: Optional[date]
-    cost_to_date: int
-    final_cost_est: int
+    cost_to_date: int = Field(sa_column=BigInteger())
+    final_cost_est: int = Field(sa_column=BigInteger())
     
     gov_contact: str
     media_contact: str
