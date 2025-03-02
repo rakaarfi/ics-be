@@ -63,8 +63,16 @@ async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     ics_209 = await read_item_by_id(Ics209, item_id=id, session=session)
     context = ics_209.model_dump()
     ics_209_id = ics_209.id
-################### boolean manipulation still needed to be done #####################################
-    # context['is_required'] = '✓' if context['is_required'] else '✗'
+
+    context['is_source_ctrl'] = '✓' if context['is_source_ctrl'] else '✗'
+    context['is_material_ctrl'] = '✓' if context['is_material_ctrl'] else '✗'
+    context['is_acc'] = '✓' if context['is_acc'] else '✗'
+    context['is_acc_mustered'] = '✓' if context['is_acc_mustered'] else '✗'
+    context['is_acc_sheltered'] = '✓' if context['is_acc_sheltered'] else '✗'
+    context['is_acc_evacuated'] = '✓' if context['is_acc_evacuated'] else '✗'
+    context['is_unacc'] = '✓' if context['is_unacc'] else '✗'
+    context['is_injured'] = '✓' if context['is_injured'] else '✗'
+    context['is_dead'] = '✓' if context['is_dead'] else '✗'    
     
     operational_period_id = context["operational_period_id"]
     # Ambil operational_period yang terkait
@@ -80,6 +88,12 @@ async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     incident_data = await read_item_by_id(IncidentData, item_id=incident_id, session=session)
     context["incident_data"] = incident_data
     context["incident_name"] = incident_data.name
+    context["incident_no"] = incident_data.no
+    context["incident_loc"] = incident_data.location
+    context["incident_timezone"] = incident_data.timezone
+    context["incident_date"] = incident_data.date_incident
+    context["incident_time"] = incident_data.time_incident
+    context["incident_desc"] = incident_data.description
 
     # Ambil Preparation terkait
     ics_209_preparations = await read_items_by_condition(Ics209Preparation, Ics209Preparation.ics_209_id == ics_209_id, session=session)
@@ -93,11 +107,11 @@ async def export_docx(id: int, session: AsyncSession = Depends(get_session)):
     # Ambil Approval terkait
     ics_209_approval = await read_items_by_condition(Ics209Approval, Ics209Approval.ics_209_id == ics_209_id, session=session)
     incident_commander_id = ics_209_approval[0].incident_commander_id
-    prepared_name = await read_item_by_id(IncidentCommander, item_id=incident_commander_id, session=session)
-    context["prepared_name"] = prepared_name.name
-    context["is_prepared"] = "✓" if ics_209_approval[0].is_prepared else "✗"
-    context['date_prepared'] = format_date_to_sentence(ics_209_approval[0].date_prepared.strftime("%Y-%m-%d"))
-    context['time_prepared'] = ics_209_approval[0].time_prepared.strftime("%H:%M")
+    approved_name = await read_item_by_id(IncidentCommander, item_id=incident_commander_id, session=session)
+    context["approved_name"] = approved_name.name
+    context["is_approved"] = "✓" if ics_209_approval[0].is_approved else "✗"
+    context['date_approved'] = format_date_to_sentence(ics_209_approval[0].date_approved.strftime("%Y-%m-%d"))
+    context['time_approved'] = ics_209_approval[0].time_approved.strftime("%H:%M")
         
     # Muat template
     doc = DocxTemplate(template_path)
