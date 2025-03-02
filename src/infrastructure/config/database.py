@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-
 # from src.core.entities.ics_201_models import (ActionsStrategiesTactics, Ics201, IcsChart,
 #                                 ResourceSummary)
 # from src.core.entities.incident_data import IncidentData, OperationalPeriod
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 # Load database URL from .env
 DATABASE_URL = config("DATABASE_URL")
-print("Database URL:",DATABASE_URL)
+# print("Database URL:",DATABASE_URL)
 
 # Create an asynchronous SQLAlchemy engine for PostgreSQL
 engine = create_async_engine(DATABASE_URL, echo=False)
