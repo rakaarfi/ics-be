@@ -11,6 +11,7 @@ from src.infrastructure.api.ics_206.ics_206_router import router as ics_206_rout
 from src.infrastructure.api.ics_207.ics_207_router import router as ics_207_router
 from src.infrastructure.api.ics_208.ics_208_router import router as ics_208_router
 from src.infrastructure.api.ics_209.ics_209_router import router as ics_209_router
+from src.infrastructure.api.ics_215a.ics_215a_router import router as ics_215a_router
 from src.infrastructure.api.imt_members.finance_section.finance_router import \
     router as finance_section_router
 from src.infrastructure.api.imt_members.logistic_section.logistic_router import \
@@ -44,6 +45,7 @@ routers = [
     (ics_207_router, "/ics-207", ["ICS 207"]),
     (ics_208_router, "/ics-208", ["ICS 208"]),
     (ics_209_router, "/ics-209", ["ICS 209"]),
+    (ics_215a_router, "/ics-215a", ["ICS 215A"])
 ]
 
 def configure_routers(app: FastAPI):

@@ -10,6 +10,7 @@ from src.core.entities.ics_204_models import Ics204, Ics204PreparationOSChief
 from src.core.entities.ics_206_models import Ics206Approval
 from src.core.entities.ics_208_models import Ics208Preparation
 from src.core.entities.ics_209_models import Ics209, Ics209Approval
+from src.core.entities.ics_215a_models import Ics215APreparationOSChief, Ics215APreparationSafetyOfficer
 from src.core.entities.roster_models import ImtRoster
 
 
@@ -76,6 +77,10 @@ class SafetyOfficer(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_208_preparation: Optional[Ics208Preparation] = Relationship(
+        back_populates="safety_officer",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_215a_preparation_safety_officer: Optional[Ics215APreparationSafetyOfficer] = Relationship(
         back_populates="safety_officer",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
@@ -164,6 +169,10 @@ class OperationSectionChief(BaseImtMember, table=True):
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
     ics_204_preparation_os_chief: Optional[Ics204PreparationOSChief] = Relationship(
+        back_populates="operation_section_chief",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"},
+    )
+    ics_215a_preparation_os_chief: Optional[Ics215APreparationOSChief] = Relationship(
         back_populates="operation_section_chief",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"},
     )
